@@ -1,216 +1,149 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Profile - Ghumantey</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Ghumantey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ========== RESET & BASE ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", "Segoe UI", sans-serif;
+        :root {
+            --primary: #0f766e;
+            --primary-light: #14b8a6;
+            --bg: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --success: #166534;
+            --success-bg: #dcfce7;
+            --warning: #854d0e;
+            --warning-bg: #fef9c3;
         }
 
-        body {
-            background: linear-gradient(135deg, #e0f2fe, #f0fdfa);
-            color: #1e293b;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        html, body { height: 100%; margin: 0; }
+        body { 
+            background: var(--bg); 
+            display: flex; 
+            flex-direction: column; 
+            color: var(--text-main);
+            font-family: "Poppins", sans-serif;
         }
+        
+        .page-content { flex: 1 0 auto; }
 
-        /* ========== HEADER ========== */
-        header {
-            background: linear-gradient(90deg, #0f766e, #0d9488, #14b8a6);
-            color: white;
-            text-align: center;
-            padding: 40px 20px 60px;
-            position: relative;
-            overflow: hidden;
+        header { 
+            background: radial-gradient(circle at top right, var(--primary-light), var(--primary)); 
+            color: white; padding: 60px 20px 120px; position: relative; text-align: center;
         }
-
-        header::after {
-            content: "";
-            position: absolute;
-            bottom: -50px;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: white;
-            border-radius: 100% 100% 0 0;
+        header::after { 
+            content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 80px; 
+            background: var(--bg); clip-path: polygon(0 100%, 100% 100%, 100% 0); 
         }
+        
+        .main-wrapper { max-width: 1100px; margin: -80px auto 40px; width: 100%; padding: 0 20px; position: relative; z-index: 10; }
+        
+        .content-layout { display: grid; grid-template-columns: 320px 1fr; gap: 30px; }
+        @media (max-width: 900px) { .content-layout { grid-template-columns: 1fr; } }
 
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-        }
+        .profile-card { background: white; border-radius: 24px; padding: 40px 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); text-align: center; }
+        .history-section { background: white; border-radius: 24px; padding: 30px; margin-bottom: 30px; border: 1px solid #f1f5f9; }
 
-        /* ========== PROFILE CARD ========== */
-        .profile-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: -60px;
-            padding: 30px 20px;
-        }
+        .table-responsive { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; background: #f8fafc; padding: 12px; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
 
-        .profile-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 40px 60px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            animation: slideUp 1s ease-in-out;
-            transition: 0.4s ease;
-        }
-
-        .profile-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 14px 45px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-image {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            border: 3px solid #0d9488;
-            object-fit: cover;
-        }
-
-        .profile-card h2 {
-            color: #0f766e;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
-
-        .profile-card p {
-            font-size: 1rem;
-            color: #475569;
-            margin: 10px 0;
-        }
-
-        .status {
-            font-weight: 600;
-            padding: 5px 14px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-
-        .active {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .inactive {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-
-        /* ========== NAVIGATION ========== */
-        nav {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        nav a {
-            background: #0f766e;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            background: #14b8a6;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(20, 184, 166, 0.4);
-        }
-
-        /* ========== FOOTER ========== */
-        footer {
-            margin-top: auto;
-            background: #1f2937;
-            color: #cbd5e1;
-            text-align: center;
-            padding: 18px;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-        }
-
-        /* ========== ANIMATIONS ========== */
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-
-            .profile-card {
-                padding: 30px 20px;
-            }
-
-            nav {
-                flex-direction: column;
-            }
-        }
+        /* Dynamic Status Badges */
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .status-paid { background: var(--success-bg); color: var(--success); }
+        .status-pending { background: var(--warning-bg); color: var(--warning); }
+        
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 600; width: 100%; margin-top: 10px; }
+        .btn-primary { background: var(--primary); color: white; }
     </style>
 </head>
-
 <body>
 
-<header>
-    <h1>Welcome to Your Profile 🌄</h1>
-</header>
+<div class="page-content">
+    <jsp:include page="navbar.jsp" />
 
-<section class="profile-container">
-    <div class="profile-card">
-        <!-- You can replace this image with a real user profile photo -->
-        <img src="${pageContext.request.contextPath}/images/profile-default.png" alt="User" class="profile-image">
+    <header>
+        <h1>Namaste, <c:out value="${user.username}" />!</h1>
+        <p style="opacity: 0.8;">Your Ghumantey Travel Hub</p>
+    </header>
 
-        <h2><c:out value="${user.username}" /></h2>
-        <p><strong>Role:</strong> <c:out value="${user.userRole.role}" /></p>
+    <div class="main-wrapper">
+        <div class="content-layout">
+            <aside>
+                <div class="profile-card">
+                    <img src="${pageContext.request.contextPath}/images/profile-default.png" style="width:100px; height:100px; border-radius:50%; margin-bottom:15px;">
+                    <h3><c:out value="${user.username}" /></h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">${user.email}</p>
+                    <a href="<c:url value='/home' />" class="btn btn-primary">Home</a>
+                </div>
+            </aside>
 
-        <p><strong>Status:</strong>
-            <c:choose>
-                <c:when test="${user.active == '1'}">
-                    <span class="status active">Active</span>
-                </c:when>
-                <c:otherwise>
-                    <span class="status inactive">Inactive</span>
-                </c:otherwise>
-            </c:choose>
-        </p>
+            <main>
+                <!-- Guide Bookings Section -->
+                <section class="history-section">
+                    <h3 style="margin-bottom: 15px;">Your Guide Trips</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead><tr><th>Guide</th><th>Date</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <c:forEach var="gb" items="${guideBookings}">
+                                    <tr>
+                                        <td>${gb.guide.firstname}</td>
+                                        <td>${gb.bookingDate}</td>
+                                        <td>
+                                            <%-- Use equalsIgnoreCase and trim to ensure the check is robust --%>
+                                            <span class="badge ${gb.status.trim().equalsIgnoreCase('PAID') ? 'status-paid' : 'status-pending'}">
+                                                <c:out value="${gb.status}" />
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <c:if test="${empty guideBookings}">
+                                    <tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No trips found.</td></tr>
+                                </c:if>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-        <nav>
-            <a href="<c:url value='/home' />">🏠 Home</a>
-            <a href="<c:url value='/logout' />">🚪 Logout</a>
-        </nav>
+                <!-- Hotel Bookings Section -->
+                <section class="history-section">
+                    <h3 style="margin-bottom: 15px;">Hotel Stays</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead><tr><th>Hotel</th><th>Check Out</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <c:forEach var="hb" items="${hotelBookings}">
+                                    <tr>
+                                        <td>${hb.hotels.hotelName}</td>
+                                        <td>${hb.checkOutDate}</td>
+                                        <td>
+                                            <!-- Status Badge Logic in Dashboard -->
+                                          <span class="badge ${hb.status.trim().equalsIgnoreCase('PAID') ? 'status-paid' : 'status-pending'}">
+                                              <c:out value="${hb.status}" />
+                                                </span>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <c:if test="${empty hotelBookings}">
+                                    <tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No stays found.</td></tr>
+                                </c:if>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
     </div>
-</section>
+</div>
 
-<footer>
-    <p>&copy; 2026 Ghumantey | Designed with ❤️ in Nepal</p>
-</footer>
+<jsp:include page="footer.jsp" />
 
 </body>
 </html>

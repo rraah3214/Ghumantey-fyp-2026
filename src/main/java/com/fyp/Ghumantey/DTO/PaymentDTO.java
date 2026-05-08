@@ -7,16 +7,16 @@ import java.io.Serializable;
 public class PaymentDTO implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private double amount;
 	private double tax_amount;
 	private double total_amount;
 	private String transaction_uuid1;
 	private String product_code1;
-	
+
 	private String transaction_uuid;
 	private String product_code;
 	private double psc;		// product service charge
@@ -25,7 +25,7 @@ public class PaymentDTO implements Serializable {
 	private String failure_url;
 	private String signed_field_names;
 	private String signature;
-	
+
 	public PaymentDTO() {
 		super();
 	}
@@ -195,12 +195,12 @@ public class PaymentDTO implements Serializable {
 				+ ", pdc=" + pdc + ", success_url=" + success_url + ", failure_url=" + failure_url
 				+ ", signed_field_names=" + signed_field_names + ", signature=" + signature + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 }
 

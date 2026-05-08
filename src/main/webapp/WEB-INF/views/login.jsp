@@ -1,138 +1,71 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Login - Ghumantey</title>
     <style>
-        /* Reset & basic body styling */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, sans-serif;
-        }
+        /* Existing Reset & Styles... (Keep your current CSS) */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Tahoma, sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(to right, #0f766e, #115e59); color: #333; position: relative; }
+        .login-container { background-color: #ffffff; padding: 35px 45px 45px 45px; border-radius: 12px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); width: 380px; text-align: center; }
+        .login-container h2 { margin-bottom: 25px; color: #115e59; font-size: 1.8rem; font-weight: 700; }
+        form label { display: block; text-align: left; margin-bottom: 6px; font-weight: 600; color: #4b5563; }
+        form input[type="text"], form input[type="password"] { width: 100%; padding: 12px; margin-bottom: 18px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; }
 
-        body {
+        /* NEW: Styles for the Remember Me Checkbox */
+        .remember-me-container {
             display: flex;
-            justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(to right, #0f766e, #115e59);
-            color: #333;
-        }
-
-        /* Login form container */
-        .login-container {
-            background-color: #ffffff;
-            padding: 40px 50px;
-            border-radius: 12px;
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-            width: 350px;
-            text-align: center;
-        }
-
-        .login-container h2 {
-            margin-bottom: 25px;
-            color: #115e59;
-            font-size: 1.8rem;
-        }
-
-        /* Success message */
-        .success-msg {
-            color: #15803d;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        /* Form labels and inputs */
-        form label {
-            display: block;
             text-align: left;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #374151;
+            margin: -5px 0 20px 0;
         }
-
-        form input[type="text"],
-        form input[type="password"] {
-            width: 100%;
-            padding: 10px 12px;
-            margin-bottom: 20px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        form input[type="text"]:focus,
-        form input[type="password"]:focus {
-            border-color: #0f766e;
-            outline: none;
-            box-shadow: 0 0 5px rgba(15, 118, 110, 0.5);
-        }
-
-        /* Submit button */
-        button[type="submit"] {
-            width: 100%;
-            padding: 12px;
-            background-color: #0f766e;
-            border: none;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 600;
+        .remember-me-container input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            accent-color: #0f766e;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
-
-        button[type="submit"]:hover {
-            background-color: #115e59;
-        }
-
-        /* Signup link */
-        .signup-link {
-            margin-top: 15px;
-            display: block;
-            font-size: 0.9rem;
-        }
-
-        .signup-link a {
-            color: #0f766e;
-            text-decoration: none;
+        .remember-me-container label {
+            margin-bottom: 0;
+            font-size: 0.85rem;
+            color: #6b7280;
+            cursor: pointer;
             font-weight: 500;
         }
 
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
+        button[type="submit"] { width: 100%; padding: 14px; background-color: #0f766e; border: none; border-radius: 8px; color: #ffffff; font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .forgot-pass-container { text-align: right; margin-top: -10px; margin-bottom: 25px; }
+        .forgot-pass-container a { color: #0f766e; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
     </style>
 </head>
 <body>
-
     <div class="login-container">
         <h2>Login</h2>
 
-        <% 
-            String success = request.getParameter("signupSuccess");
-            if (success != null) { 
-        %>
-            <p class="success-msg">Signup successful! Please login below.</p>
-        <% } %>
-
         <form action="${pageContext.request.contextPath}/login" method="post">
-            <label>Username:</label>
-            <input type="text" name="username" required>
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Username" required>
 
-            <label>Password:</label>
-            <input type="password" name="password" required>
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <div class="remember-me-container">
+                <input type="checkbox" name="remember-me" id="rememberMe">
+                <label for="rememberMe">Stay logged in for 30 days</label>
+            </div>
+
+            <div class="forgot-pass-container">
+                <a href="${pageContext.request.contextPath}/forgot-password">Forgot Password?</a>
+            </div>
 
             <button type="submit">Login</button>
         </form>
 
-        <p class="signup-link">Don’t have an account? 
-            <a href="${pageContext.request.contextPath}/signup">Signup here</a>
+        <p style="margin-top: 25px; color: #6b7280;">Don’t have an account? 
+            <a href="${pageContext.request.contextPath}/signup" style="color: #0f766e; font-weight: 700; text-decoration: none;">Signup here</a>
         </p>
     </div>
-
 </body>
 </html>

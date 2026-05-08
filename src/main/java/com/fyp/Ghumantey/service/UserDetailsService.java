@@ -7,11 +7,11 @@ public interface UserDetailsService {
  public void saveUser(UserDetails userDetails);
  public UserDetails getUserById(int id);
  public UserDetails getUserEmail(String email);
- public UserDetails getUserNumber(long number);
- public UserDetails getUserByUsername(String username);	
+ public UserDetails getUserByUsername(String username);
  public void updateUser(UserDetails userDetails);
  public void deletUser(UserDetails userDetails);
- 
+ UserDetails getUserByResetToken(String token);
+
  void deleteUser(UserDetails userDetails);
 
 
@@ -21,7 +21,7 @@ public interface UserDetailsService {
 	List<UserDetails> getAllUsers();
 
 
-	UserDetails getUserByNumber(long number);
+	public List<UserDetails> getUserByNumber(long number);
 
- 
+
 }

@@ -23,47 +23,30 @@ public class UserRole implements Serializable {
     @Column(name = "role_id")
     private int id;
 
-    private String role;
+    @Column(name = "role", nullable = false)
+    private String role; // Example: "ADMIN", "GUIDE", "USER"
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private UserDetails userDetails;
 
     // Default constructor
-    public UserRole() {
-        super();
-    }
+    public UserRole() {}
 
     // Parameterized constructor
     public UserRole(int id, String role, UserDetails userDetails) {
-        super();
         this.id = id;
         this.role = role;
         this.userDetails = userDetails;
     }
 
     // Getters and Setters
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public UserDetails getUserDetails() {
-        return userDetails;
-    }
-
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
-    }
+    public UserDetails getUserDetails() { return userDetails; }
+    public void setUserDetails(UserDetails userDetails) { this.userDetails = userDetails; }
 }

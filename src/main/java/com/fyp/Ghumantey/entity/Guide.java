@@ -2,8 +2,11 @@ package com.fyp.Ghumantey.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,114 +15,92 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Guide_table")
+@Table(name = "guide_table")
 public class Guide implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	
-	
-	
-	@Column(name="id")
-	private int id;
-	@OneToOne
-	@JoinColumn(name = "user_id", nullable = false)
-    private UserDetails user;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="firstname")
-	private String firstname;
-	@Column(name="lastname")
-	private String lastname;
-	@Column(name="email")
-	private String email;
-	
-	@Column(name="address")
-	private String address;
-	@Column(name="number")
-	private long number;
-	
-	// default constructor
-	public Guide() {
-		super();
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-// Parameterize constructor
-	public Guide(int id, String firstname, String lastname, String email, String address, long number) {
-		super();
-		this.id = id;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.email = email;
-		this.address = address;
-		this.number = number;
-	}
-// Generating getter and setter
+    // CRITICAL: Added @JsonIgnore to prevent infinite recursion during JSON serialization
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserDetails userDetails;
 
-	public int getId() {
-		return id;
-	}
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String address;
+    private Long number;
 
+    @Column(name = "notifications", columnDefinition = "TEXT")
+    private String notifications;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(nullable = false)
+    private String status;   // PENDING / APPROVED / REJECTED
 
+    private Double price;
 
-	public String getFirstname() {
-		return firstname;
-	}
+    @Column(name = "license_no")
+    private String licenseNo;
 
+    @Column(name = "photo")
+    private String photo;
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public Guide() {}
 
+    public Guide(UserDetails userDetails, String firstname, String lastname, String email,
+                 String address, Long number, String status, Double price,
+                 String notifications, String licenseNo, String photo) {
+        this.userDetails = userDetails;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.address = address;
+        this.number = number;
+        this.status = status;
+        this.price = price;
+        this.notifications = notifications;
+        this.licenseNo = licenseNo;
+        this.photo = photo;
+    }
 
-	public String getLastame() {
-		return lastname;
-	}
+    // Getters and Setters
+    public Integer getId() { return id; }
 
+    public UserDetails getUserDetails() { return userDetails; }
+    public void setUserDetails(UserDetails userDetails) { this.userDetails = userDetails; }
 
-	public void setLastame( String lastname) {
-		this.lastname = lastname;
-	}
+    public String getFirstname() { return firstname; }
+    public void setFirstname(String firstname) { this.firstname = firstname; }
 
+    public String getLastname() { return lastname; }
+    public void setLastname(String lastname) { this.lastname = lastname; }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public Long getNumber() { return number; }
+    public void setNumber(Long number) { this.number = number; }
 
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-	public String getAddress() {
-		return address;
-	}
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
 
+    public String getNotifications() { return notifications; }
+    public void setNotifications(String notifications) { this.notifications = notifications; }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getLicenseNo() { return licenseNo; }
+    public void setLicenseNo(String licenseNo) { this.licenseNo = licenseNo; }
 
-
-	public long getNumber() {
-		return number;
-	}
-
-
-	public void setNumber(long number) {
-		this.number = number;
-	}
-	
-	
-	
-	
-	
+    public String getPhoto() { return photo; }
+    public void setPhoto(String photo) { this.photo = photo; }
 }

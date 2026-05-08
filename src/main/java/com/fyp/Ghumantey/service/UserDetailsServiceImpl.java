@@ -29,15 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userDetailDao.findByEmail(email);
     }
 
-    @Override
-    public UserDetails getUserNumber(long number) {
-        return userDetailDao.findByNumber(number);
-    }
 
-    @Override
-    public UserDetails getUserByUsername(String username) {
-        return userDetailDao.findByUsername(username);
-    }
+
 
     @Override
     public void updateUser(UserDetails userDetails) {
@@ -65,7 +58,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails getUserByNumber(long number) {
+    public List<UserDetails> getUserByNumber(long number) {
         return userDetailDao.findByNumber(number);
     }
+
+	@Override
+	public UserDetails getUserByUsername(String username) {
+		 return userDetailDao.findByUsername(username);
+	}
+	@Override
+    public UserDetails getUserByResetToken(String token) {
+        return userDetailDao.findByResetToken(token);
+    }
+
+
 }
